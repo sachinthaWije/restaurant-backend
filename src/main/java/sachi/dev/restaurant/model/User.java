@@ -19,7 +19,7 @@ public class User {
     private String username;
     private String password;
     private String role;
-    private String branchId;
+    private String restaurantId;
     private ContactInfo contactInfo;
 
     @CreatedDate
