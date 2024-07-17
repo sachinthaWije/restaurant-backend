@@ -13,12 +13,14 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
-    @NotBlank(message = "User ID is required")
+
     private String userId;
 
     @NotBlank(message = "Username is required")
     @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
     private String username;
+
+    private String password;
 
     @NotBlank(message = "Role is required")
     private String role;
