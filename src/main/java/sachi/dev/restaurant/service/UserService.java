@@ -13,5 +13,6 @@ public interface UserService {
     List<UserDTO> getAllUsers();
     List<UserDTO> getAllUsersByRestaurantId();
     Boolean existsByUsername(String username);
+    public UserDTO findUserByJwtToken(String jwt) throws Exception;
 
 }

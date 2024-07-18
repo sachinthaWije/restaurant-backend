@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -24,12 +25,12 @@ public class User{
     private String userId;
     private String username;
     private String password;
-    private String role;
+    private USER_ROLE role=USER_ROLE.ROLE_CUSTOMER;
     private String restaurantId;
     private ContactInfo contactInfo;
 
     @CreatedDate
-    private LocalDateTime createdAt;
+    private Date createdAt;
 
     @Data
     @AllArgsConstructor

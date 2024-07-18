@@ -5,8 +5,10 @@ import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import sachi.dev.restaurant.model.USER_ROLE;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 
 @Data
@@ -23,7 +25,7 @@ public class UserDTO {
     private String password;
 
     @NotBlank(message = "Role is required")
-    private String role;
+    private USER_ROLE role=USER_ROLE.ROLE_CUSTOMER;
 
     @NotBlank(message = "Restaurant ID is required")
     private String restaurantId;
@@ -32,7 +34,7 @@ public class UserDTO {
     @NotNull(message = "Contact information is required")
     private ContactInfoDTO contactInfo;
 
-    private LocalDateTime createdAt;
+    private Date createdAt;
 
     @Data
     @AllArgsConstructor

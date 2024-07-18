@@ -12,12 +12,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sachi.dev.restaurant.config.JwtProvider;
 import sachi.dev.restaurant.dto.UserDTO;
+import sachi.dev.restaurant.model.USER_ROLE;
 import sachi.dev.restaurant.model.User;
 import sachi.dev.restaurant.request.LoginRequest;
 import sachi.dev.restaurant.request.RegisterRequest;
@@ -60,7 +58,7 @@ public class AuthController {
         AuthResponse authResponse = new AuthResponse();
         authResponse.setJwt(jwt);
         authResponse.setMessage("Login successful");
-        authResponse.setUserRole(role);
+        authResponse.setUserRole(USER_ROLE.valueOf(role));
 
         return new ResponseEntity<>(authResponse, HttpStatus.OK);
     }
@@ -77,6 +75,28 @@ public class AuthController {
         }
 
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+    }
+
+    @PostMapping("/register/admin")
+    public ResponseEntity<?> registerAdmin(@RequestBody RegisterRequest registerRequest) {
+        if (userService.existsByUsername(registerRequest.getUsername())) {
+            return ResponseEntity.badRequest().body("Error: Username is already taken!");
+        }
+
+        UserDTO userDTO = getUserDTO(registerRequest);
+
+        User user = modelMapper.map(userService.createUser(userDTO),User.class);
+
+        Authentication auth = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        String jwt = jwtProvider.generateToken(auth);
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setJwt(jwt);
+        authResponse.setMessage("Register successful");
+        authResponse.setUserRole(user.getRole());
+
+        return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
     }
 
     @PostMapping("/register/customer")
@@ -102,15 +122,16 @@ public class AuthController {
         return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
     }
 
-    @PostMapping("/register/staff")
-    public ResponseEntity<?> registerStaff(@RequestBody RegisterRequest registerRequest) {
+    @PostMapping("/register/staff/{restaurantId}")
+    public ResponseEntity<?> registerStaff(@RequestBody RegisterRequest registerRequest,
+                                           @PathVariable String restaurantId) {
         if (userService.existsByUsername(registerRequest.getUsername())) {
             return ResponseEntity.badRequest().body("Error: Username is already taken!");
         }
-        if (registerRequest.getRestaurantId() == null || registerRequest.getRestaurantId().isEmpty()) {
+        if (restaurantId == null || restaurantId.isEmpty()) {
             return ResponseEntity.badRequest().body("Error: Restaurant ID is required for staff registration!");
         }
-
+        registerRequest.setRestaurantId(restaurantId);
         UserDTO userDTO = getUserDTO(registerRequest);
 
         User user = modelMapper.map(userService.createUser(userDTO),User.class);
