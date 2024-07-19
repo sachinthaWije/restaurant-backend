@@ -1,5 +1,6 @@
 package sachi.dev.restaurant.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class RestaurantController {
     private UserService userService;
 
     @PostMapping()
-    public ResponseEntity<?> createRestaurant(@RequestBody RestaurantDTO restaurantDTO,
+    public ResponseEntity<?> createRestaurant(@Valid @RequestBody RestaurantDTO restaurantDTO,
                                               @RequestHeader("Authorization") String jwt)  throws Exception {
         UserDTO userDTO = userService.findUserByJwtToken(jwt);
         return new ResponseEntity<>(restaurantService.createRestaurant(restaurantDTO,userDTO), HttpStatus.CREATED);
