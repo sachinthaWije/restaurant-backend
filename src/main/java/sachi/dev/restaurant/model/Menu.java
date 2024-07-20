@@ -19,8 +19,6 @@ public class Menu {
     private String name;
     private String description;
     private Double price;
-    private String categoryId;
-    private String restaurantId;
     private Boolean isAvailable;
     private List<String> images;
     private String offerId;

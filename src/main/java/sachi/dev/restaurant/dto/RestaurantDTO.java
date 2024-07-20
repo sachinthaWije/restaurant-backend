@@ -38,6 +38,7 @@ public class RestaurantDTO {
 
     private List<String> photoGallery;
     private List<String> facilities;
+    private List<String> menuIds;
 
     private Date createdAt;
 

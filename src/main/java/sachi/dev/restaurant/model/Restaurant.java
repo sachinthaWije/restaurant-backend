@@ -25,6 +25,7 @@ public class Restaurant {
     private ContactInfo contactInfo;
     private List<String> photoGallery;
     private List<String> facilities;
+    private List<String> menuIds;
 
     @CreatedDate
     private Date createdAt;

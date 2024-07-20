@@ -23,12 +23,6 @@ public class MenuDTO {
     @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than zero")
     private Double price;
 
-    @NotBlank(message = "Category is required")
-    private String categoryId;
-
-    @NotBlank(message = "Restaurant is required")
-    private String restaurantId;
-
     private Boolean isAvailable;
     private List<String> images;
     private String offerId;
