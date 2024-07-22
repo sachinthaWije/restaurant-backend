@@ -118,29 +118,37 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public void addMenuToRestaurant(String restaurantId, String menuId) {
-        Optional<Menu> menuOpt = menuRepository.findById(menuId);
-        if (menuOpt.isPresent()) {
-            Menu menu = menuOpt.get();
-            Optional<Restaurant> restaurantOpt = restaurantRepository.findById(restaurantId);
-            if (restaurantOpt.isPresent()) {
-                Restaurant restaurant = restaurantOpt.get();
-                if (restaurant.getMenuIds() != null) {
-                    if (!restaurant.getMenuIds().contains(menuId)) {
-                        restaurant.getMenuIds().add(menuId);
-                    }else{
-                        throw new CustomException("This menu already added to this restaurant", HttpStatus.CONFLICT);
-                    }
-                } else {
-                    restaurant.setMenuIds(new ArrayList<>(List.of(menu.getMenuId())));
-                }
-                restaurantRepository.save(restaurant);
-            }else{
-                throw new CustomException("Restaurant not found with id:" + restaurantId, HttpStatus.NOT_FOUND);
+    public void addMenuToRestaurant(String restaurantId, List<String> menuIds) {
+        List<Menu> menus = new ArrayList<>();
+        for (String menuId : menuIds) {
+            Optional<Menu> menuOpt = menuRepository.findById(menuId);
+            if (menuOpt.isPresent()) {
+                menus.add(menuOpt.get());
+            } else {
+                throw new CustomException("Menu not found with id:" + menuId, HttpStatus.NOT_FOUND);
             }
-        }else {
-            throw new CustomException("Menu not found with id:" + menuId, HttpStatus.NOT_FOUND);
         }
+
+
+        Optional<Restaurant> restaurantOpt = restaurantRepository.findById(restaurantId);
+        if (restaurantOpt.isPresent()) {
+            Restaurant restaurant = restaurantOpt.get();
+            if (restaurant.getMenuIds() == null) {
+                restaurant.setMenuIds(new ArrayList<>());
+            }
+
+            for (Menu menu : menus) {
+                if (!restaurant.getMenuIds().contains(menu.getMenuId())) {
+                    restaurant.getMenuIds().add(menu.getMenuId());
+                } else {
+                    throw new CustomException("Menu with id " + menu.getMenuId() + " already added to this restaurant", HttpStatus.CONFLICT);
+                }
+            }
+            restaurantRepository.save(restaurant);
+        } else {
+            throw new CustomException("Restaurant not found with id:" + restaurantId, HttpStatus.NOT_FOUND);
+        }
+
     }
 
 }

@@ -15,5 +15,5 @@ public interface MenuService {
     MenuDTO update(MenuDTO menuDTO,String id);
     MenuDTO UpdateAvailability(String id);
     CategoryDTO findCategoryByMenuId(String menuId);
-    void addMenuToRestaurant(String restaurantId, String menuId);
+    void addMenuToRestaurant(String restaurantId, List<String> menuIds);
 }

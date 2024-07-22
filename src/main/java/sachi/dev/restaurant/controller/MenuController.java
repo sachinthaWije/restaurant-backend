@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sachi.dev.restaurant.dto.CategoryDTO;
 import sachi.dev.restaurant.dto.MenuDTO;
+import sachi.dev.restaurant.exception.CustomException;
 import sachi.dev.restaurant.service.MenuService;
 
 import java.util.List;
@@ -38,13 +39,18 @@ public class MenuController {
 
     @GetMapping("/{menuId}/category")
     public ResponseEntity<CategoryDTO> getCategoryByMenuId(@PathVariable String menuId) {
-        return new ResponseEntity<>(menuService.findCategoryByMenuId(menuId),HttpStatus.OK);
+        return new ResponseEntity<>(menuService.findCategoryByMenuId(menuId), HttpStatus.OK);
     }
 
-    @PostMapping("/api/staff/menus/{menuId}/add-to-restaurant")
-    public ResponseEntity<?> addMenuToRestaurant(@PathVariable String menuId, @RequestParam String restaurantId) {
-        menuService.addMenuToRestaurant(restaurantId,menuId);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @PostMapping("/api/staff/add-to-restaurant/{restaurantId}")
+    public ResponseEntity<?> addMenuToRestaurant(@RequestBody List<String> menuIds, @PathVariable String restaurantId) {
+        try {
+            menuService.addMenuToRestaurant(restaurantId, menuIds);
+            return ResponseEntity.ok("Menus added to restaurant successfully.");
+        } catch (CustomException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+
     }
 
 }

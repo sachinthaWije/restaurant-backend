@@ -7,7 +7,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +23,8 @@ public class Reservation {
     private String reservationId;
     private String customerId;
     private String restaurantId;
-    private Date reservationDate;
+    private LocalDate reservationDate;
+    private LocalTime reservationTime;
     private String reservationType;
     private String reservationStatus;
     private int numberOfPeople;
