@@ -10,4 +10,5 @@ public interface RestaurantService {
     RestaurantDTO createRestaurant(RestaurantDTO restaurantDTO, UserDTO userDTO) throws Exception;
     RestaurantDTO updateRestaurant(String id,RestaurantDTO restaurantDTO);
     List<RestaurantDTO> getAllRestaurants();
+    RestaurantDTO getRestaurantById(String id);
 }

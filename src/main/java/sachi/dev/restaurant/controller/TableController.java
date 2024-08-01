@@ -11,13 +11,13 @@ import sachi.dev.restaurant.service.TableService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/staff")
+@RequestMapping("")
 public class TableController {
 
     @Autowired
     private TableService tableService;
 
-    @PostMapping("/table/{restaurantId}")
+    @PostMapping("/api/staff/table/{restaurantId}")
     public ResponseEntity<TableDTO> createTable(@Valid @RequestBody TableDTO tableDTO,
                                                 @PathVariable String restaurantId) {
         return new ResponseEntity<>(tableService.createTable(tableDTO, restaurantId), HttpStatus.CREATED);

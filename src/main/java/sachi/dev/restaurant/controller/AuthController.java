@@ -59,6 +59,7 @@ public class AuthController {
         authResponse.setJwt(jwt);
         authResponse.setMessage("Login successful");
         authResponse.setUserRole(USER_ROLE.valueOf(role));
+        authResponse.setName(username);
 
         return new ResponseEntity<>(authResponse, HttpStatus.OK);
     }

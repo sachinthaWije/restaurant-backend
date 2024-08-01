@@ -54,4 +54,9 @@ public class RestaurantServiceImpl implements RestaurantService {
                 .map(restaurant -> modelMapper.map(restaurant, RestaurantDTO.class))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public RestaurantDTO getRestaurantById(String id) {
+        return modelMapper.map(restaurantRepository.findById(id).orElse(null), RestaurantDTO.class);
+    }
 }

@@ -14,7 +14,7 @@ import sachi.dev.restaurant.service.RestaurantService;
 import sachi.dev.restaurant.service.UserService;
 
 @RestController
-@RequestMapping("/api/admin/restaurant")
+@RequestMapping
 public class RestaurantController {
 
     @Autowired
@@ -23,10 +23,21 @@ public class RestaurantController {
     @Autowired
     private UserService userService;
 
-    @PostMapping()
+    @PostMapping("/api/admin/restaurant")
     public ResponseEntity<?> createRestaurant(@Valid @RequestBody RestaurantDTO restaurantDTO,
                                               @RequestHeader("Authorization") String jwt)  throws Exception {
         UserDTO userDTO = userService.findUserByJwtToken(jwt);
         return new ResponseEntity<>(restaurantService.createRestaurant(restaurantDTO,userDTO), HttpStatus.CREATED);
     }
+
+    @GetMapping("/restaurant")
+    public ResponseEntity<?> getAllRestaurants()  throws Exception {
+        return new ResponseEntity<>(restaurantService.getAllRestaurants(), HttpStatus.OK);
+    }
+
+    @GetMapping("/restaurant/{id}")
+    public ResponseEntity<?> getRestaurantById(@PathVariable String id)  throws Exception {
+        return new ResponseEntity<>(restaurantService.getRestaurantById(id), HttpStatus.OK);
+    }
+
 }

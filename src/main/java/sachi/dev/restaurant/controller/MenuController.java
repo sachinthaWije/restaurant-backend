@@ -53,4 +53,9 @@ public class MenuController {
 
     }
 
+    @GetMapping("/menu/{id}")
+    public ResponseEntity<MenuDTO> getMenuById(@PathVariable String id) {
+        return new ResponseEntity<>(menuService.findById(id), HttpStatus.OK);
+    }
+
 }
