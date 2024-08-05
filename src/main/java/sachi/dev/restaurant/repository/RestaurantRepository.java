@@ -1,6 +1,7 @@
 package sachi.dev.restaurant.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import sachi.dev.restaurant.dto.RestaurantDTO;
 import sachi.dev.restaurant.model.Restaurant;
 

@@ -25,6 +25,8 @@ public class ReservationDTO {
     @NotNull(message = "Restaurant ID is required")
     private String restaurantId;
 
+    private String restaurantName;
+
     @NotNull(message = "Reservation date is required")
     @FutureOrPresent(message = "Reservation date must be in the present or future")
     private LocalDate reservationDate;
@@ -45,6 +47,9 @@ public class ReservationDTO {
 
     @NotNull(message = "Table ID is required")
     private String tableId;
+
+    private String tableName;
+    private double paymentAmount;
 
     private List<String> orderMenuItems;
     private String paymentId;

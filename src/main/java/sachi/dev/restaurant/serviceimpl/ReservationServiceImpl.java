@@ -4,23 +4,40 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import sachi.dev.restaurant.dto.PaymentDTO;
 import sachi.dev.restaurant.dto.ReservationDTO;
+import sachi.dev.restaurant.dto.RestaurantDTO;
 import sachi.dev.restaurant.exception.CustomException;
 import sachi.dev.restaurant.model.Reservation;
 import sachi.dev.restaurant.model.ReservationStatus;
+import sachi.dev.restaurant.model.Restaurant;
+import sachi.dev.restaurant.model.Table;
+import sachi.dev.restaurant.repository.PaymentRepository;
 import sachi.dev.restaurant.repository.ReservationRepository;
+import sachi.dev.restaurant.repository.RestaurantRepository;
+import sachi.dev.restaurant.repository.TableRepository;
 import sachi.dev.restaurant.service.ReservationService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
 
     @Autowired
     private ReservationRepository reservationRepository;
+
+    @Autowired
+    private RestaurantRepository restaurantRepository;
+
+    @Autowired
+    private TableRepository tableRepository;
+
+    @Autowired
+    private PaymentRepository paymentRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -45,7 +62,27 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public List<ReservationDTO> findReservationsByCustomerId(String customerId) {
-        return reservationRepository.findByCustomerId(customerId);
+        List<ReservationDTO> reservationDTOList = reservationRepository.findByCustomerId(customerId);
+        for (ReservationDTO reservationDTO : reservationDTOList) {
+            Optional<Restaurant> optionalRestaurantDTO = restaurantRepository.findById(reservationDTO.getRestaurantId());
+            String restaurantName = optionalRestaurantDTO.get().getName() + " - " + optionalRestaurantDTO.get().getLocation();
+
+            Optional<Table> optionalTable = tableRepository.findById(reservationDTO.getTableId());
+            String tableNumber = optionalTable.get().getTableNumber();
+
+            PaymentDTO paymentDTO = paymentRepository.findPaymentByReservationId(reservationDTO.getReservationId());
+
+            reservationDTO.setRestaurantName(restaurantName);
+            reservationDTO.setTableName(tableNumber);
+            if (paymentDTO != null) {
+                reservationDTO.setPaymentAmount(paymentDTO.getAmount());
+            }
+
+
+            System.out.println(restaurantName);
+
+        }
+        return reservationDTOList;
     }
 
     @Override
