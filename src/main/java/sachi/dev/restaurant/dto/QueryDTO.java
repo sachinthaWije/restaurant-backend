@@ -1,22 +1,13 @@
-package sachi.dev.restaurant.model;
+package sachi.dev.restaurant.dto;
 
-
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import sachi.dev.restaurant.model.QueryStatus;
 
 import java.util.Date;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Document(collection = "queries")
-public class Query {
-
-    @Id
+public class QueryDTO {
     private String queryId;
     private String customerId;
     private String restaurantId;
@@ -24,11 +15,7 @@ public class Query {
     private String message;
     private QueryStatus status;
 
-    @CreatedDate
-    private Date createdAt;
-
     private String respondedMessage;
     private String respondedBy;
     private Date respondedAt;
-
 }
