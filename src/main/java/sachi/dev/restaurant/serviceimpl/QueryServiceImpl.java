@@ -6,11 +6,14 @@ import org.springframework.stereotype.Service;
 import sachi.dev.restaurant.dto.QueryDTO;
 import sachi.dev.restaurant.model.Query;
 import sachi.dev.restaurant.model.QueryStatus;
+import sachi.dev.restaurant.model.Restaurant;
 import sachi.dev.restaurant.repository.QueryRepository;
+import sachi.dev.restaurant.repository.RestaurantRepository;
 import sachi.dev.restaurant.service.QueryService;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,6 +25,9 @@ public class QueryServiceImpl implements QueryService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private RestaurantRepository restaurantRepository;
+
     @Override
     public QueryDTO findById(String id) {
         return modelMapper.map(queryRepository.findById(id), QueryDTO.class);
@@ -29,7 +35,14 @@ public class QueryServiceImpl implements QueryService {
 
     @Override
     public List<QueryDTO> findAllByCustomerId(String customerId) {
-        return queryRepository.findAllByCustomerId(customerId);
+       List<QueryDTO> list= queryRepository.findAllByCustomerId(customerId);
+       for(QueryDTO queryDTO:list){
+           Optional<Restaurant> optionalRestaurantDTO = restaurantRepository.findById(queryDTO.getRestaurantId());
+           String restaurantName = optionalRestaurantDTO.get().getName() + " - " + optionalRestaurantDTO.get().getLocation();
+
+           queryDTO.setRestaurantName(restaurantName);
+       }
+        return list;
     }
 
 

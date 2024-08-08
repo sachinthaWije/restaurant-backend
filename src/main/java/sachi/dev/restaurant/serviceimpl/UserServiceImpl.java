@@ -18,6 +18,7 @@ import sachi.dev.restaurant.service.UserService;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -39,7 +40,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
-        if(userDTO.getRestaurantId()!=null){
+        if (userDTO.getRestaurantId() != null) {
             Restaurant restaurant = restaurantRepository.findById(userDTO.getRestaurantId())
                     .orElseThrow(() -> new IllegalArgumentException("Restaurant not found"));
 
@@ -57,8 +58,6 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
         return modelMapper.map(user, UserDTO.class);
     }
-
-
 
 
     @Override
@@ -90,12 +89,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO findUserByJwtToken(String jwt) throws Exception {
-        String username=jwtProvider.getEmailFromToken(jwt);
-        User user=userRepository.findByUsername(username);
-        if(user==null){
+        String username = jwtProvider.getEmailFromToken(jwt);
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
             throw new ResourceNotFoundException("User not found with id: " + username);
         }
-        return modelMapper.map(user, UserDTO.class);
+        Optional<Restaurant> optionalRestaurantDTO = restaurantRepository.findById(user.getRestaurantId());
+        String restaurantName = optionalRestaurantDTO.get().getName() + " - " + optionalRestaurantDTO.get().getLocation();
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+        userDTO.setRestaurantName(restaurantName);
+        return userDTO;
+    }
+
+    @Override
+    public List<UserDTO> getStaffUsers() {
+        List<UserDTO> userDTOList = userRepository.findByRoleStaff();
+        for (UserDTO userDTO : userDTOList) {
+            Optional<Restaurant> optionalRestaurantDTO = restaurantRepository.findById(userDTO.getRestaurantId());
+            String restaurantName = optionalRestaurantDTO.get().getName() + " - " + optionalRestaurantDTO.get().getLocation();
+
+            userDTO.setRestaurantName(restaurantName);
+        }
+        return userDTOList;
     }
 
 }

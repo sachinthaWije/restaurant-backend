@@ -1,5 +1,6 @@
 package sachi.dev.restaurant.service;
 
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import sachi.dev.restaurant.dto.UserDTO;
 
@@ -15,4 +16,5 @@ public interface UserService {
     Boolean existsByUsername(String username);
     public UserDTO findUserByJwtToken(String jwt) throws Exception;
 
+    public List<UserDTO> getStaffUsers();
 }

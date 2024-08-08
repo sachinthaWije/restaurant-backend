@@ -29,6 +29,7 @@ public class QueryController {
     public ResponseEntity<QueryDTO> save(@RequestBody QueryDTO queryDTO,
                                          @RequestHeader("Authorization") String jwt,
                                          @PathVariable String restaurantId) throws Exception {
+        System.out.println("RESTAURANT QUERY");
         UserDTO loggedUser= userService.findUserByJwtToken(jwt);
         queryDTO.setCustomerId(loggedUser.getUserId());
 

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import sachi.dev.restaurant.dto.UserDTO;
 import sachi.dev.restaurant.service.UserService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -20,5 +22,10 @@ public class UserController {
     @GetMapping("/user")
     public ResponseEntity<UserDTO> findByJwtToken(@RequestHeader("Authorization") String jwt) throws Exception {
        return new ResponseEntity<>(userService.findUserByJwtToken(jwt), HttpStatus.OK);
+    }
+
+    @GetMapping("/admin/staff-users")
+    public ResponseEntity<List<UserDTO>> getStaffUsers() {
+        return new ResponseEntity<>(userService.getStaffUsers(), HttpStatus.OK);
     }
 }

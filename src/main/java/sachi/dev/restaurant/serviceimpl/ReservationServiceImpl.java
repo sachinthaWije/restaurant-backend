@@ -8,14 +8,8 @@ import sachi.dev.restaurant.dto.PaymentDTO;
 import sachi.dev.restaurant.dto.ReservationDTO;
 import sachi.dev.restaurant.dto.RestaurantDTO;
 import sachi.dev.restaurant.exception.CustomException;
-import sachi.dev.restaurant.model.Reservation;
-import sachi.dev.restaurant.model.ReservationStatus;
-import sachi.dev.restaurant.model.Restaurant;
-import sachi.dev.restaurant.model.Table;
-import sachi.dev.restaurant.repository.PaymentRepository;
-import sachi.dev.restaurant.repository.ReservationRepository;
-import sachi.dev.restaurant.repository.RestaurantRepository;
-import sachi.dev.restaurant.repository.TableRepository;
+import sachi.dev.restaurant.model.*;
+import sachi.dev.restaurant.repository.*;
 import sachi.dev.restaurant.service.ReservationService;
 
 import java.time.LocalDate;
@@ -41,6 +35,9 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public ReservationDTO create(ReservationDTO reservationDTO) {
@@ -87,7 +84,13 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public List<ReservationDTO> findReservationsByRestaurantId(String restaurantId) {
-        return reservationRepository.findByRestaurantId(restaurantId);
+        List<ReservationDTO> reservationDTOList = reservationRepository.findByRestaurantId(restaurantId);
+        for (ReservationDTO reservationDTO : reservationDTOList) {
+            Optional<User> optUser = userRepository.findById(reservationDTO.getCustomerId());
+            String username = optUser.get().getUsername();
+            reservationDTO.setCustomerName(username);
+        }
+        return reservationDTOList;
     }
 
     @Override

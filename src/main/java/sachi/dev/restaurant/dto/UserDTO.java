@@ -29,7 +29,7 @@ public class UserDTO {
 
     @NotBlank(message = "Restaurant ID is required")
     private String restaurantId;
-
+    private String restaurantName;
     @Valid
     @NotNull(message = "Contact information is required")
     private ContactInfoDTO contactInfo;

@@ -11,10 +11,12 @@ public class QueryDTO {
     private String queryId;
     private String customerId;
     private String restaurantId;
+    private String restaurantName;
     private String subject;
     private String message;
     private QueryStatus status;
 
+    private Date createdAt;
     private String respondedMessage;
     private String respondedBy;
     private Date respondedAt;

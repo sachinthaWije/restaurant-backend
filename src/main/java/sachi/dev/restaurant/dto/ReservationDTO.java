@@ -21,6 +21,7 @@ public class ReservationDTO {
 
     @NotNull(message = "Restaurant ID is required")
     private String customerId;
+    private String customerName;
 
     @NotNull(message = "Restaurant ID is required")
     private String restaurantId;
