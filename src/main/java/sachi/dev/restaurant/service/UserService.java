@@ -17,4 +17,5 @@ public interface UserService {
     public UserDTO findUserByJwtToken(String jwt) throws Exception;
 
     public List<UserDTO> getStaffUsers();
+    public String findRestaurantByJwtToken(String jwt) throws Exception;
 }

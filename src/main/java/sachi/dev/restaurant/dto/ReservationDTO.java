@@ -38,7 +38,7 @@ public class ReservationDTO {
 
 
     @NotNull(message = "Reservation type is required")
-    private ReservationType reservationType;
+    private String reservationType;
 
     @NotNull(message = "Reservation status is required")
     private ReservationStatus reservationStatus;
@@ -51,6 +51,7 @@ public class ReservationDTO {
 
     private String tableName;
     private double paymentAmount;
+    private String paymentType;
 
     private List<String> orderMenuItems;
     private String paymentId;

@@ -6,4 +6,5 @@ import sachi.dev.restaurant.model.Payment;
 
 public interface PaymentRepository extends MongoRepository<Payment, String> {
     PaymentDTO findPaymentByReservationId(String reservationId);
+    PaymentDTO findByReservationId(String reservationId);
 }

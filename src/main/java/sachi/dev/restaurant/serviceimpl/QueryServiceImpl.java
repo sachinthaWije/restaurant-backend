@@ -7,8 +7,10 @@ import sachi.dev.restaurant.dto.QueryDTO;
 import sachi.dev.restaurant.model.Query;
 import sachi.dev.restaurant.model.QueryStatus;
 import sachi.dev.restaurant.model.Restaurant;
+import sachi.dev.restaurant.model.User;
 import sachi.dev.restaurant.repository.QueryRepository;
 import sachi.dev.restaurant.repository.RestaurantRepository;
+import sachi.dev.restaurant.repository.UserRepository;
 import sachi.dev.restaurant.service.QueryService;
 
 import java.util.Date;
@@ -27,6 +29,9 @@ public class QueryServiceImpl implements QueryService {
 
     @Autowired
     private RestaurantRepository restaurantRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public QueryDTO findById(String id) {
@@ -66,6 +71,16 @@ public class QueryServiceImpl implements QueryService {
 
     @Override
     public List<QueryDTO> findAllByRestaurantId(String restaurantId) {
-        return queryRepository.findAllByRestaurantId(restaurantId);
+        List<QueryDTO> list= queryRepository.findAllByRestaurantId(restaurantId);
+        for(QueryDTO queryDTO:list){
+           Optional<User> user=  userRepository.findById(queryDTO.getCustomerId());
+           queryDTO.setCustomerName(user.get().getUsername());
+
+           if(queryDTO.getRespondedBy()!=null){
+               Optional<User> staff=  userRepository.findById(queryDTO.getRespondedBy());
+               queryDTO.setRespondedBy(staff.get().getUsername());
+           }
+        }
+        return list;
     }
 }

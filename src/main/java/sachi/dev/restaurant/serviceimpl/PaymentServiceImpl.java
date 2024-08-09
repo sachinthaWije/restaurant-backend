@@ -22,4 +22,9 @@ public class PaymentServiceImpl implements PaymentService {
         Payment payment = modelMapper.map(paymentDTO, Payment.class);
         return modelMapper.map(paymentRepository.save(payment), PaymentDTO.class);
     }
+
+    @Override
+    public PaymentDTO getByReservationId(String reservationId) {
+        return paymentRepository.findByReservationId(reservationId);
+    }
 }

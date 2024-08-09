@@ -94,10 +94,13 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new ResourceNotFoundException("User not found with id: " + username);
         }
-        Optional<Restaurant> optionalRestaurantDTO = restaurantRepository.findById(user.getRestaurantId());
-        String restaurantName = optionalRestaurantDTO.get().getName() + " - " + optionalRestaurantDTO.get().getLocation();
         UserDTO userDTO = modelMapper.map(user, UserDTO.class);
-        userDTO.setRestaurantName(restaurantName);
+        if(user.getRestaurantId()!=null) {
+            Optional<Restaurant> optionalRestaurantDTO = restaurantRepository.findById(user.getRestaurantId());
+            String restaurantName = optionalRestaurantDTO.get().getName() + " - " + optionalRestaurantDTO.get().getLocation();
+
+            userDTO.setRestaurantName(restaurantName);
+        }
         return userDTO;
     }
 
@@ -111,6 +114,14 @@ public class UserServiceImpl implements UserService {
             userDTO.setRestaurantName(restaurantName);
         }
         return userDTOList;
+    }
+
+    @Override
+    public String findRestaurantByJwtToken(String jwt) throws Exception {
+        UserDTO userDTO = findUserByJwtToken(jwt);
+        Optional<Restaurant> optRestaurant=  restaurantRepository.findById(userDTO.getRestaurantId());
+        String restaurantName = optRestaurant.get().getName() + " - " + optRestaurant.get().getLocation();
+        return restaurantName;
     }
 
 }

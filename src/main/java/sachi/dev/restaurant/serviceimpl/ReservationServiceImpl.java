@@ -89,6 +89,18 @@ public class ReservationServiceImpl implements ReservationService {
             Optional<User> optUser = userRepository.findById(reservationDTO.getCustomerId());
             String username = optUser.get().getUsername();
             reservationDTO.setCustomerName(username);
+            reservationDTO.setReservationType(reservationDTO.getReservationType().toLowerCase().replaceAll("_"," "));
+
+           PaymentDTO paymentDTO= paymentRepository.findByReservationId(reservationDTO.getReservationId());
+            if (paymentDTO != null) {
+                reservationDTO.setPaymentAmount(paymentDTO.getAmount());
+                reservationDTO.setPaymentType(paymentDTO.getPaymentType().toLowerCase().replaceAll("_"," "));
+            }
+
+            Optional<Table> optionalTable= tableRepository.findById(reservationDTO.getTableId());
+            if (optionalTable.isPresent()) {
+                reservationDTO.setTableName(optionalTable.get().getTableNumber());
+            }
         }
         return reservationDTOList;
     }

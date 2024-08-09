@@ -28,4 +28,9 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> getStaffUsers() {
         return new ResponseEntity<>(userService.getStaffUsers(), HttpStatus.OK);
     }
+
+    @GetMapping("/staff/restaurant-name")
+    public ResponseEntity<String> findRestaurantByJwtToken(@RequestHeader("Authorization") String jwt) throws Exception {
+        return new ResponseEntity<>(userService.findRestaurantByJwtToken(jwt),HttpStatus.OK);
+    }
 }

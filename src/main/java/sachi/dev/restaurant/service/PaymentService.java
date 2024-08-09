@@ -5,4 +5,5 @@ import sachi.dev.restaurant.dto.PaymentDTO;
 public interface PaymentService {
 
     PaymentDTO makePayment(PaymentDTO paymentDTO);
+    PaymentDTO getByReservationId(String reservationId);
 }

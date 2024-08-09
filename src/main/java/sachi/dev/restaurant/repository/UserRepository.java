@@ -17,4 +17,5 @@ public interface UserRepository extends MongoRepository<User, String> {
 
     @Query("{'role' :  'ROLE_STAFF'}")
     List<UserDTO> findByRoleStaff();
+    String findRestaurantByUsername(String username);
 }

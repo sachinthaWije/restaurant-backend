@@ -10,6 +10,7 @@ import java.util.Date;
 public class QueryDTO {
     private String queryId;
     private String customerId;
+    private String customerName;
     private String restaurantId;
     private String restaurantName;
     private String subject;
