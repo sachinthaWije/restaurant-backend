@@ -2,6 +2,8 @@ package sachi.dev.restaurant.service;
 
 import sachi.dev.restaurant.dto.CategoryDTO;
 import sachi.dev.restaurant.dto.MenuDTO;
+import sachi.dev.restaurant.dto.MenuSearchCriteria;
+import sachi.dev.restaurant.model.Menu;
 
 import java.util.List;
 import java.util.Optional;

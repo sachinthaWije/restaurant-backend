@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import sachi.dev.restaurant.dto.CategoryDTO;
 import sachi.dev.restaurant.dto.MenuDTO;
+import sachi.dev.restaurant.dto.MenuSearchCriteria;
 import sachi.dev.restaurant.exception.CustomException;
 import sachi.dev.restaurant.model.Category;
 import sachi.dev.restaurant.model.Menu;
