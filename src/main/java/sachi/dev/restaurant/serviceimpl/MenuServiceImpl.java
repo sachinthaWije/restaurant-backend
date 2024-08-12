@@ -7,12 +7,14 @@ import org.springframework.stereotype.Service;
 import sachi.dev.restaurant.dto.CategoryDTO;
 import sachi.dev.restaurant.dto.MenuDTO;
 import sachi.dev.restaurant.dto.MenuSearchCriteria;
+import sachi.dev.restaurant.dto.OfferDTO;
 import sachi.dev.restaurant.exception.CustomException;
 import sachi.dev.restaurant.model.Category;
 import sachi.dev.restaurant.model.Menu;
 import sachi.dev.restaurant.model.Restaurant;
 import sachi.dev.restaurant.repository.CategoryRepository;
 import sachi.dev.restaurant.repository.MenuRepository;
+import sachi.dev.restaurant.repository.OfferRepository;
 import sachi.dev.restaurant.repository.RestaurantRepository;
 import sachi.dev.restaurant.service.MenuService;
 
@@ -35,6 +37,9 @@ public class MenuServiceImpl implements MenuService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private OfferRepository offerRepository;
 
     @Override
     public MenuDTO findById(String id) {
@@ -150,6 +155,31 @@ public class MenuServiceImpl implements MenuService {
             throw new CustomException("Restaurant not found with id:" + restaurantId, HttpStatus.NOT_FOUND);
         }
 
+    }
+
+    @Override
+    public MenuDTO setOfferToMenu(String menuId, String offerId) throws Exception {
+        Optional<Menu> menu = menuRepository.findById(menuId);
+
+        if (menu.isPresent()) {
+            // Find the offer by its ID to ensure it exists
+            OfferDTO offer = offerRepository.findOfferByOfferId(offerId);
+
+            if (offer != null) {
+                // Set the offerId to the menu
+                menu.get().setOfferId(offerId);
+
+                // Save the updated menu back to the repository
+                Menu updatedMenu = menuRepository.save(menu.get());
+                return modelMapper.map(updatedMenu, MenuDTO.class);
+            } else {
+                // Handle the case where the offer does not exist
+                throw new Exception("Offer with ID " + offerId + " not found.");
+            }
+        } else {
+            // Handle the case where the menu does not exist
+            throw new Exception("Menu with ID " + menuId + " not found.");
+        }
     }
 
 }

@@ -73,15 +73,30 @@ public class MenuController {
             @RequestParam(required = false) String name,
             @RequestParam(required = false,defaultValue = "0") Double minPrice,
             @RequestParam(required = false,defaultValue = "1000000") Double maxPrice,
+            @RequestParam(required = false) String categoryName,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Menu> results = searchService.searchMenus(name, minPrice, maxPrice, pageable);
+        Page<Menu> results = searchService.searchMenus(name, minPrice, maxPrice,categoryName, pageable);
         System.out.println("results: " + results);
         if (results.isEmpty()) {
             System.out.println("No results found for the given criteria.");
         }
         return ResponseEntity.ok(new SearchResponse(results));
     }
+
+
+    @PutMapping("api/staff/{menuId}/offer/{offerId}")
+    public ResponseEntity<MenuDTO> setOfferToMenu(@PathVariable String menuId, @PathVariable String offerId) {
+        try {
+            // Call the service method to set the offerId to the menu
+            MenuDTO updatedMenu = menuService.setOfferToMenu(menuId, offerId);
+            return ResponseEntity.ok(updatedMenu);
+        } catch (Exception ex) {
+            // Handle any other exceptions
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
 
 }

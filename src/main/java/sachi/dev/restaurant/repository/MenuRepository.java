@@ -14,7 +14,6 @@ public interface MenuRepository extends MongoRepository<Menu, String> {
 
     Optional<MenuDTO> findByName(String name);
 
-    @Query("{'name': {$regex: ?0, $options: 'i'}, 'price': {$gte: ?1, $lte: ?2}}")
-    Page<Menu> findByNameRegexAndPriceRange(String nameRegex, Double minPrice, Double maxPrice, Pageable pageable);
-
+    @Query("{'name': {$regex: ?0, $options: 'i'}, 'price': {$gte: ?1, $lte: ?2}, 'menuId': {$in: ?3}}")
+    Page<Menu> findByNameRegexAndPriceRangeAndCategoryIds(String nameRegex, Double minPrice, Double maxPrice, List<String> menuIds, Pageable pageable);
 }

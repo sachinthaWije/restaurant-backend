@@ -12,8 +12,12 @@ import sachi.dev.restaurant.repository.MenuRepository;
 import sachi.dev.restaurant.repository.RestaurantRepository;
 import sachi.dev.restaurant.service.SearchService;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 @Service
-public class SearchServiceImpl  implements SearchService {
+public class SearchServiceImpl implements SearchService {
 
     @Autowired
     private MenuRepository menuRepository;
@@ -24,11 +28,17 @@ public class SearchServiceImpl  implements SearchService {
 
 
     @Override
-    public Page<Menu> searchMenus(String name, Double minPrice, Double maxPrice, Pageable pageable) {
-        System.out.println("name: "+name);
+    public Page<Menu> searchMenus(String name, Double minPrice, Double maxPrice, String categoryName, Pageable pageable) {
         String nameRegex = name != null ? ".*" + name + ".*" : ".*";
-        System.out.println(menuRepository.findByNameRegexAndPriceRange(nameRegex, minPrice, maxPrice, pageable));
-        return menuRepository.findByNameRegexAndPriceRange(nameRegex, minPrice, maxPrice, pageable);
+        String categoryNameRegex = categoryName != null ? ".*" + categoryName + ".*" : ".*";
+
+        List<String> categoryIds = categoryRepository.findByCategoryNameRegex(categoryNameRegex)
+                .stream()
+                .flatMap(category -> category.getMenuIds() != null ? category.getMenuIds().stream() : Stream.empty())
+                .collect(Collectors.toList());
+        System.out.println("categoryIds "+ categoryIds.size());
+
+        return menuRepository.findByNameRegexAndPriceRangeAndCategoryIds(nameRegex, minPrice, maxPrice, categoryIds, pageable);
     }
 
     @Override

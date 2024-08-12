@@ -26,5 +26,5 @@ public class Offer {
     private Date endDate;
 
     @CreatedDate
-    private LocalDateTime createdAt;
+    private Date createdAt;
 }

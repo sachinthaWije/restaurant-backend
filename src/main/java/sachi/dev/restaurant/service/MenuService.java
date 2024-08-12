@@ -18,4 +18,6 @@ public interface MenuService {
     MenuDTO UpdateAvailability(String id);
     CategoryDTO findCategoryByMenuId(String menuId);
     void addMenuToRestaurant(String restaurantId, List<String> menuIds);
+    MenuDTO setOfferToMenu(String menuId,String offerId) throws Exception;
+
 }

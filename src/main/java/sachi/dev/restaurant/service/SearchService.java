@@ -8,7 +8,7 @@ import sachi.dev.restaurant.model.Restaurant;
 
 public interface SearchService {
 
-    Page<Menu> searchMenus(String name, Double minPrice, Double maxPrice, Pageable pageable);
+    Page<Menu> searchMenus(String name, Double minPrice, Double maxPrice,String categoryName, Pageable pageable);
 
     public Page<Restaurant> searchRestaurantsByLocation(String location, Pageable pageable);
 
