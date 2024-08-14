@@ -28,7 +28,7 @@ public class RestaurantDTO {
     @NotBlank(message = "Location is required")
     private String location;
 
-    @NotBlank(message = "Admin is required")
+
     private String adminId;
 
     @Valid
