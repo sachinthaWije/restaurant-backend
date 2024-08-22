@@ -26,4 +26,6 @@ public class MenuDTO {
     private Boolean isAvailable;
     private List<String> images;
     private String offerId;
+    private String offerName;
+    private int discountPercentage;
 }

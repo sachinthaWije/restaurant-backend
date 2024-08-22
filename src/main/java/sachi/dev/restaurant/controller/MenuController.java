@@ -77,7 +77,7 @@ public class MenuController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Menu> results = searchService.searchMenus(name, minPrice, maxPrice,categoryName, pageable);
+        Page<MenuDTO> results = searchService.searchMenus(name, minPrice, maxPrice,categoryName, pageable);
         System.out.println("results: " + results);
         if (results.isEmpty()) {
             System.out.println("No results found for the given criteria.");

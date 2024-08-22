@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sachi.dev.restaurant.dto.OfferDTO;
+import sachi.dev.restaurant.model.Offer;
 import sachi.dev.restaurant.service.OfferService;
 
 import java.util.List;
@@ -30,5 +31,10 @@ public class OfferController {
     @GetMapping("/api/staff/offer")
     public ResponseEntity<List<OfferDTO>> getAllOffers() {
         return new ResponseEntity<>(offerService.findAllOffers(), HttpStatus.OK);
+    }
+
+    @GetMapping("/api/staff/offer/{offerId}")
+    public ResponseEntity<OfferDTO> getOfferById(@PathVariable String offerId) throws Exception {
+        return  new ResponseEntity<>(offerService.findOfferById(offerId),HttpStatus.OK);
     }
 }
