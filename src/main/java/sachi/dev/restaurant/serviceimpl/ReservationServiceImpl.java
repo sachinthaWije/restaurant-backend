@@ -115,6 +115,11 @@ public class ReservationServiceImpl implements ReservationService {
         reservationRepository.updateReservationStatus(reservationId, reservationStatus);
     }
 
+    @Override
+    public List<ReservationDTO> searchReservations(String restaurantId, LocalDate startDate,LocalDate endDate, String reservationType) {
+        return reservationRepository.findByCriteria(restaurantId, startDate,endDate, reservationType);
+    }
+
     private boolean isTableReserved(String tableId, LocalDate date, LocalTime time) {
         return reservationRepository.existsByTableIdAndReservationDateAndReservationTime(tableId, date, time);
     }

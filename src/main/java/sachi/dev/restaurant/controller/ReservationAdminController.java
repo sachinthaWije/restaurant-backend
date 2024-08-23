@@ -11,6 +11,7 @@ import sachi.dev.restaurant.model.ReservationStatus;
 import sachi.dev.restaurant.request.UpdateReservationStatusRequest;
 import sachi.dev.restaurant.service.ReservationService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -36,4 +37,21 @@ public class ReservationAdminController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/search-reservations")
+    public ResponseEntity<List<ReservationDTO>> searchReservations(
+        @RequestParam(required = false) String restaurantId,
+        @RequestParam(required = false) String startDate,
+        @RequestParam(required = false) String endDate,
+        @RequestParam(required = false) String reservationType
+    ){
+        LocalDate start = (startDate != null) ? LocalDate.parse(startDate) : null;
+        LocalDate end = (endDate != null) ? LocalDate.parse(endDate) : null;
+
+        System.out.println("Search reservations: " + restaurantId + ", " + startDate + ", " + endDate);
+
+        return new ResponseEntity<>(reservationService.searchReservations(restaurantId, start,end, reservationType), HttpStatus.OK);
+    }
+
+
 }
