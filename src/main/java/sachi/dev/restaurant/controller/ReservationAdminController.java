@@ -48,7 +48,8 @@ public class ReservationAdminController {
         LocalDate start = (startDate != null) ? LocalDate.parse(startDate) : null;
         LocalDate end = (endDate != null) ? LocalDate.parse(endDate) : null;
 
-        System.out.println("Search reservations: " + restaurantId + ", " + startDate + ", " + endDate);
+        System.out.println("Search reservations: " + restaurantId + ", " + startDate + ", " + endDate
+        + ", " + reservationType);
 
         return new ResponseEntity<>(reservationService.searchReservations(restaurantId, start,end, reservationType), HttpStatus.OK);
     }
