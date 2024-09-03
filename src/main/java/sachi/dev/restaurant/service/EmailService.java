@@ -15,11 +15,12 @@ public class EmailService {
     @Autowired
     private SendGrid sendGrid;
 
-    public void sendRegistrationEmail(String to, String name) throws IOException {
+    public void sendRegistrationEmail(String to,String subject,String htmlContent) throws IOException {
         Email from = new Email("infoswphotographylk@gmail.com");
-        String subject = "Registration Confirmation";
         Email toEmail = new Email(to);
-        Content content = new Content("text/plain", "Dear " + name + ",\n\nThank you for registering with our service!");
+
+
+        Content content = new Content("text/html", htmlContent);
         Mail mail = new Mail(from, subject, toEmail, content);
 
         Request request = new Request();

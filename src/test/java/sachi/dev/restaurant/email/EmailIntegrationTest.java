@@ -15,6 +15,6 @@ public class EmailIntegrationTest {
 
     @Test
     void testSendRealEmail() throws IOException {
-        emailService.sendRegistrationEmail("sachinthraneesh@gmail.com", "Test User");
+        emailService.sendRegistrationEmail("sachinthraneesh@gmail.com","subject","html content");
     }
 }
